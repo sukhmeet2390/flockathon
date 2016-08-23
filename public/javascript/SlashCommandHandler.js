@@ -1,6 +1,7 @@
 var url="http://mockbin.com/request";
-var botToken = "";
+var botToken = "u:14hqdwaw9bhkw44d";
 var HttpClient = require('./HttpClient');
+var Authorize = require('./Authorize');
 var SlashCommandHandler = {
     handleGeneralText: function (state) {
         var text = state.text;
@@ -35,11 +36,11 @@ var SlashCommandHandler = {
     _sendTextMessage: function (userId,msg) {
         var body= {
             message:{
-                to: userId,
+                to: botToken,
                 text: msg
             }
         };
-        HttpClient.doPost(botToken,url,body);
+        HttpClient.doPost(Authorize.getUserToken(userId),url,body);
     },
     _stopAndLogCurrentTask: function(user) {
         if (user.taskId) {

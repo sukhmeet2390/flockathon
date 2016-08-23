@@ -6,7 +6,7 @@ var Client = {
         var def = Deferred();
         console.log('--- Making GET call for URL ---' + url);
         unirest.get(url)
-            .headers({'Accept': 'application/json', 'Content-Type': 'application/json','X-Flock-Validation-Token': token})
+            .headers({'Accept': 'application/json', 'Content-Type': 'application/json','X-Flock-User-Token': token})
             .end(function (response) {
                 console.log('received response for GET URL ---' + url);
                 console.log(response.body);
@@ -18,7 +18,7 @@ var Client = {
         var def = Deferred();
         console.log('--- Making POST call for URL ---' + url);
         unirest.post(url)
-            .headers({'Accept': 'application/json', 'Content-Type': 'application/json'})
+            .headers({'Accept': 'application/json', 'Content-Type': 'application/json','X-Flock-User-Token': token})
             .send(bodyObject)
             .end(function (response) {
                 console.log('received response for POST URL ---' + url);
