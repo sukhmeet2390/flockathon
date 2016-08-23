@@ -104,10 +104,10 @@ var SlashCommandHandler = {
         }
         else{
             var task = user.data.getTask(user.taskId);
-            this._sendTextMessage(state.userId,"");
+            this._sendTextMessage(state.userId,"Current TaskID: "+task.taskId+", Task Description: "+task.description);
         }
     },
-    handleHelp: function () {
+    handleHelp: function (state) {
         // this.initMockData();
         // var url = 'http://mockbin.com/request';
         // var body = {"parameter": 23, "foo": "bar"};
@@ -116,6 +116,8 @@ var SlashCommandHandler = {
         //     console.log(response);
         //     return Users['user-guid'];
         // });
+        var message="help message";
+        this._sendTextMessage(state.userId,message);
     }
 };
 module.exports = SlashCommandHandler;
