@@ -43,6 +43,7 @@ var Authorize = {
         userData[data.userId] = data.userToken;
     },
     getUserToken: function(userId){
+        return '335e7218-7ecc-4562-90c1-63ba67aa331c';
         return userData[userId];
     }
 };

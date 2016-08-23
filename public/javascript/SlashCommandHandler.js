@@ -2,6 +2,8 @@ var url="https://api.flock-staging.co/v1/chat.sendMessage";
 var botToken = "u:14hqdwaw9bhkw44d";
 var HttpClient = require('./HttpClient');
 var Authorize = require('./Authorize');
+var Util = require('./Util');
+
 var SlashCommandHandler = {
     handleGeneralText: function (state) {
         var text = state.text;
@@ -46,9 +48,10 @@ var SlashCommandHandler = {
         HttpClient.doPost(Authorize.getUserToken(userId),url,body);
     },
     _stopAndLogCurrentTask: function(user) {
+        console.log('stoping and logging current task ' ,user);
         if (user.taskId) {
             var task = user.data.getTask(user.taskId);
-            user.endTime = new Date();
+            user.endTime = new Date().getTime();
             task.timeWorked += user.endTime - user.startTime;
             user.taskId = null;
             return true;
@@ -65,7 +68,8 @@ var SlashCommandHandler = {
         }
         else{
             tasklist.forEach(function (task) {
-                outText+="TaskID: "+task.taskId+",Description: "+task.description+",Hours Worked: "+task.timeWorked;
+                var time = Util.convertTime(task.timeWorked);
+                outText+="TaskID: "+task.taskId+",Description: "+task.description+",Time Worked: "+time;
                 if(task.completed){
                     outText+="(DONE)";
                 }
@@ -85,7 +89,7 @@ var SlashCommandHandler = {
                 this._stopAndLogCurrentTask(user);
             }
             user.taskId = subText;
-            user.startTime= new Date();
+            user.startTime= new Date().getTime();
             this._sendTextMessage(state.userId,"Current Task: "+newTask.description);
         }
         else{
@@ -94,7 +98,7 @@ var SlashCommandHandler = {
     },
     handleStop: function (state) {
         var user = Users[state.userId];
-        if(this._stopAndLogCurrentTask(user)){
+        if(!this._stopAndLogCurrentTask(user)){
             this._sendTextMessage(state.userId,"No Current Task");
         }
         else{
@@ -112,7 +116,6 @@ var SlashCommandHandler = {
         }
     },
     handleHelp: function (state) {
-        console.log('----Satet', state);
         var text = "/workingAt help - List of commands"+
                 "/workingAt list - List of tasks currently working on"+
                 "/workingAt start - Start working on current task"+
