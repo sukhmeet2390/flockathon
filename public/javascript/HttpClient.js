@@ -16,7 +16,7 @@ var Client = {
     },
     doPost: function (token, url, bodyObject) {
         var def = Deferred();
-        console.log('--- Making POST call for URL ---' + url);
+        console.log('--- Making POST call for URL ---' , bodyObject );
         unirest.post(url)
             .headers({'Accept': 'application/json', 'Content-Type': 'application/json','X-Flock-User-Token': token})
             .send(bodyObject)

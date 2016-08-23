@@ -50,17 +50,20 @@ var SlashCommandHandler = {
     _sendHtmlMessage: function (userId,body) {
         console.log('Sending html msg', body);
         var body= {
+            id: "03240904"+Math.random()*1000,
+            title: "Title",
+            description: "Something",
+            appId: "5b657a91-6860-49ad-9fa1-b6ba89a26e16",
             message: {
                 to: botToken,
                 text: "msg",
-                attachment: {
+                attachments: [{
                     views: {
                         html: {
-                            //inline: "<iframe width='560' height='315' src='https://www.youtube.com/embed/UZiHPLGh-Ek' frameborder='0' allowfullscreen></iframe>"
                             inline: "<div>test</div>"
                         }
                     }
-                }
+                }]
             }
         };
         HttpClient.doPost(Authorize.getUserToken(userId),url,body);
@@ -98,7 +101,7 @@ var SlashCommandHandler = {
                 outText+="\n";
             });
         }
-       // this._sendHtmlMessage(state.userId,outText);
+        this._sendHtmlMessage(state.userId,outText);
         this._sendTextMessage(state.userId,outText);
     },
     handleStart: function (state,subText) {
@@ -146,7 +149,7 @@ var SlashCommandHandler = {
 
         this._sendTextMessage(state.userId, text);
     },
-    handleAdd: function (state, text) {
+    handleAdd: function (state, text) {se
         var user = Users[state.userId];
         var task = user.data.addToList({
             description:text,
