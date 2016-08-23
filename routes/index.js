@@ -1,13 +1,15 @@
 var express = require('express');
+var Authorize = require('../public/javascript/Authorize');
 var router = express.Router();
 var controller = require('../public/javascript/MainController');
 
 /* GET home page. */
-router.post('/', function(req, res, next) {
-    console.log('Received an event ', req.body);
+router.post('/', function (req, res, next) {
     var eventName = req.body.name;
-    // Authorize.auth()
-    switch (eventName){
+    console.log('req.body', req);
+    //if (!Authorize.authorize(req.header('x-flock-validation-token'))) return null;
+
+    switch (eventName) {
         case 'client.slashCommand':
             controller.handleSlashCommand(req.body);
             break;
@@ -23,13 +25,8 @@ router.post('/', function(req, res, next) {
             break;
 
     }
-  res.render('index', { title: 'Express' });
+    res.send('respond with a resource');
 });
 
-router.get('/help', function(req, res){
-   controller.handleHelp().then(function(data){
-       res.send(data);
-   });
-});
 
 module.exports = router;

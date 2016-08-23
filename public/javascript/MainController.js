@@ -3,12 +3,10 @@ var TaskList = require('./TaskList');
 var SlashCommandHandler = require('./SlashCommandHandler');
 var User = require('./User');
 
-var APP_ID = '';
-var APP_SECRET= '';
-Users = {};
+var Users = {};
 var TOKEN = '123';
 
-var SLASH_COMMAND = '/workingOn';
+var SLASH_COMMAND = 'workingAt';
 var Controller = {
     initMockData: function () {
         var taskList = new TaskList();

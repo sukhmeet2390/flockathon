@@ -6,7 +6,7 @@ function User(props){ // {description: , userId: }
     this.startTime= 0;
     this.endTime=0;
 }
-Task.prototype.getUserID = function(){
+User.prototype.getUserID = function(){
     return this.userId;
 };
 

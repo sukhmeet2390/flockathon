@@ -1,13 +1,16 @@
+var APP_ID = '5b657a91-6860-49ad-9fa1-b6ba89a26e16';
+var APP_SECRET= 'c5a2288d-5454-4bb5-9f6c-4106c5c22391';
+
 var jwt = require('json-web-token');
-var SECRET ;
 var userData = {};
 function decode(token) {
-    jwt.decode(SECRET, token, function (err, decode) {
+    jwt.decode(APP_SECRET, token, function (err, decode) {
         if (err) {
             console.error(err.name, err.message);
             return false;
         } else {
             console.log('decoded to : ' , decode);
+            if(decode.appId !== APP_ID) return false;
             return decode;
         }
     });
@@ -29,7 +32,7 @@ var Authorize = {
         }
     },
     setSecretKey: function(secret){
-        SECRET = secret;
+        APP_SECRET = secret;
         return true
     }
 };
