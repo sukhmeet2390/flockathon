@@ -31,7 +31,7 @@ var SlashCommandHandler = {
                 break;
             case 'add':
                 this.handleAdd(state,subText);
-
+                break;
             default:
                 break;
 
@@ -47,6 +47,24 @@ var SlashCommandHandler = {
         };
         HttpClient.doPost(Authorize.getUserToken(userId),url,body);
     },
+    _sendHtmlMessage: function (userId,body) {
+        console.log('Sending html msg', body);
+        var body= {
+            message: {
+                to: botToken,
+                text: "msg",
+                attachment: {
+                    views: {
+                        html: {
+                            //inline: "<iframe width='560' height='315' src='https://www.youtube.com/embed/UZiHPLGh-Ek' frameborder='0' allowfullscreen></iframe>"
+                            inline: "<div>test</div>"
+                        }
+                    }
+                }
+            }
+        };
+        HttpClient.doPost(Authorize.getUserToken(userId),url,body);
+    },
     _stopAndLogCurrentTask: function(user) {
         console.log('stoping and logging current task ' ,user);
         if (user.taskId) {
@@ -54,6 +72,7 @@ var SlashCommandHandler = {
             user.endTime = new Date().getTime();
             task.timeWorked += user.endTime - user.startTime;
             user.taskId = null;
+            task.currentlyWorkingOn=false;
             return true;
         }
         else
@@ -79,6 +98,7 @@ var SlashCommandHandler = {
                 outText+="\n";
             });
         }
+        this._sendHtmlMessage(state.userId,outText);
         this._sendTextMessage(state.userId,outText);
     },
     handleStart: function (state,subText) {
@@ -90,6 +110,8 @@ var SlashCommandHandler = {
             }
             user.taskId = subText;
             user.startTime= new Date().getTime();
+            user.startTime= new Date();
+            newTask.currentlyWorkingOn=true;
             this._sendTextMessage(state.userId,"Current Task: "+newTask.description);
         }
         else{
