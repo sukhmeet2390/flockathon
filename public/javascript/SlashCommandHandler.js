@@ -98,7 +98,7 @@ var SlashCommandHandler = {
                 outText+="\n";
             });
         }
-        this._sendHtmlMessage(state.userId,outText);
+       // this._sendHtmlMessage(state.userId,outText);
         this._sendTextMessage(state.userId,outText);
     },
     handleStart: function (state,subText) {
@@ -152,7 +152,7 @@ var SlashCommandHandler = {
             description:text,
             userId: state.userId
         });
-        this._sendTextMessage(state.userId,"New TaskID: "+task.taskId+", Task Description: "+task.description);
+        this._sendTextMessage(state.userId,"Task created TaskID: "+task.taskId+", Task Description: "+task.description);
     }
 };
 module.exports = SlashCommandHandler;

@@ -34,13 +34,11 @@ var Controller = {
 
     handleSlashCommand: function (state) {
         var command = state.command;
-        console.log('--- Users', Users);
         if(!Users[state.userId]){
             this.initUser(state);
         }
         switch (state.command) {
             case SLASH_COMMAND:
-                console.log('My type of slash command');
                 SlashCommandHandler.handleGeneralText(state);
                 break;
             

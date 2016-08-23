@@ -1,5 +1,5 @@
 var APP_ID = '5b657a91-6860-49ad-9fa1-b6ba89a26e16';
-var APP_SECRET= 'c5a2288d-5454-4bb5-9f6c-4106c5c22391';
+var APP_SECRET= '61842a2c-a843-46ec-be85-f66d1a62d358';
 
 var jwt = require('json-web-token');
 var userData = {};
@@ -43,7 +43,7 @@ var Authorize = {
         userData[data.userId] = data.userToken;
     },
     getUserToken: function(userId){
-        return '335e7218-7ecc-4562-90c1-63ba67aa331c';
+        return 'b7a6a7a8-62c5-4a15-b812-6a92fb3dd0f3';
         return userData[userId];
     }
 };
