@@ -16,6 +16,7 @@
   },
   "devDependencies": {
     "deferred": "^0.7.5",
+    "json-web-token": "^2.0.3",
     "unirest": "^0.5.1"
   }
 }

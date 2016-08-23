@@ -5,6 +5,7 @@ function Task(props){ // {description: , userId: }
     this.userId = props.userId;
     this.currentlyWorkingOn = false;
     this.completed = false;
+    this.timeWorked = 0; // hrs+min
 }
 Task.prototype.toggleCompleted = function(){
     this.completed = !this.completed;
