@@ -6,6 +6,7 @@ var controller = require('../public/javascript/MainController');
 router.post('/', function(req, res, next) {
     console.log('Received an event ', req.body);
     var eventName = req.body.name;
+    // Authorize.auth()
     switch (eventName){
         case 'client.slashCommand':
             controller.handleSlashCommand(req.body);

@@ -1,10 +1,11 @@
 var HttpClient = require('./HttpClient');
 var TaskList = require('./TaskList');
 var SlashCommandHandler = require('./SlashCommandHandler');
+var User = require('./User');
 
 var APP_ID = '';
 var APP_SECRET= '';
-var Users = {};
+Users = {};
 var TOKEN = '123';
 
 var SLASH_COMMAND = '/workingOn';
@@ -25,10 +26,16 @@ var Controller = {
     init: function () {
         // set up app Key and token here
     },
+    initUser: function (state) {
+        Users[state.userId] = new User(state);
+    },
 
 
     handleSlashCommand: function (state) {
         var command = state.command;
+        if(!Users[state.userId]){
+            this.initUser();
+        }
         switch (state.command) {
             case SLASH_COMMAND:
                 console.log('My type of slash command');
