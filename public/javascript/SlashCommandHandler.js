@@ -146,12 +146,12 @@ var SlashCommandHandler = {
         }
     },
     handleHelp: function (state) {
-        var text = "/workingAt help - List of commands"+
-                "/workingAt list - List of tasks currently working on"+
-                "/workingAt start - Start working on current task"+
-                "/workingAt stop - End current Task allocation"+
-                "/workingAt done - Mark current task as completed"+
-                "/workingAt what - List the current task";
+        var text = "/workingAt help - List of commands \n"+
+                "/workingAt list - List of tasks currently working on \n"+
+                "/workingAt start - Start working on current task \n"+
+                "/workingAt stop - End current Task allocation \n"+
+                "/workingAt done - Mark current task as completed \n"+
+                "/workingAt what - List the current task \n";
 
         this._sendTextMessage(state.userId, text);
     },
