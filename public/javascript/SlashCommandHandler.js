@@ -50,7 +50,7 @@ var SlashCommandHandler = {
         };
         HttpClient.doPost(Authorize.getUserToken(userId),url,body);
     },
-    _sendHtmlMessage: function (userId,bodyHTML,text, height) {
+    _sendHtmlMessage: function (userId,bodyHTML, height) {
         console.log('Sending html msg', bodyHTML);
         var body= {
             id: "03240904"+Math.random()*1000,
@@ -59,7 +59,7 @@ var SlashCommandHandler = {
             appId: "5b657a91-6860-49ad-9fa1-b6ba89a26e16",
             message: {
                 to: botToken,
-                text: text,
+                text: "Here is your TASKS summary",
                 attachments: [{
                     views: {
                         html: {
@@ -96,20 +96,15 @@ var SlashCommandHandler = {
             var html="<table>";
             html+="<style>table {font-family: arial, sans-serif;border-collapse: collapse;width: 100%; font-size: small}td, th {border: 1px solid #dddddd;text-align: left;padding: 2px;} tr:nth-child(even) {background-color: #dddddd;} </style>"
             html+="<tr> <th>TaskID</th> <th>Description</th> <th>Time Worked</th> <th>Done</th> <th>Current Task</th></tr>";
-            var text="No current Task";
             tasklist.forEach(function (task) {
                 var time = Util.convertTime(task.timeWorked);
                 var done = task.completed?"Yes":"No";
                 var currentTask = task.currentlyWorkingOn?"Yes":"No";
-                if(task.currentlyWorkingOn){
-                    text ="Current Task: "+ task.description;
-                }
                 html+= "<tr> <td>"+task.taskId+"</td> <td>"+task.description+"</td> <td>"+time+"</td> <td>"+done+"</td> <td>"+currentTask+"</td></tr>";
-
             });
             html+="</table>";
             var height = tasklist.length*20+40;
-            this._sendHtmlMessage(state.userId,html,text, height);
+            this._sendHtmlMessage(state.userId,html, height);
         }
     },
     handleStart: function (state,subText) {
