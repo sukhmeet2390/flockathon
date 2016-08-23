@@ -32,6 +32,9 @@ var SlashCommandHandler = {
             case 'add':
                 this.handleAdd(state,subText);
                 break;
+            case 'done':
+                this.handleMarkAsDone(state, subText);
+                break;
             default:
                 break;
 
@@ -116,31 +119,30 @@ var SlashCommandHandler = {
             }
             user.taskId = subText;
             user.startTime= new Date().getTime();
-            user.startTime= new Date();
             newTask.currentlyWorkingOn=true;
-            this._sendTextMessage(state.userId,"Current Task: "+newTask.description);
+            this._sendTextMessage(state.userId,"You are now working on task -"+newTask.description);
         }
         else{
-            this._sendTextMessage(state.userId,"Incorrect TaskId");
+            this._sendTextMessage(state.userId,"Unable to find the task.Use `list` to get list of all the tasks");
         }
     },
     handleStop: function (state) {
         var user = Users[state.userId];
         if(!this._stopAndLogCurrentTask(user)){
-            this._sendTextMessage(state.userId,"No Current Task");
+            this._sendTextMessage(state.userId,"Currently not working on any task. Use `list` to get all tasks");
         }
         else{
-            this._sendTextMessage(state.userId,"Task Stopped");
+            this._sendTextMessage(state.userId,"All tasked currently stopped");
         }
     },
     handleWhat: function(state){
         var user = Users[state.userId];
         if(!user.taskId){
-            this._sendTextMessage(state.userId,"No Current Task");
+            this._sendTextMessage(state.userId,"Not working on any task right now. Use `start` to start working on new task");
         }
         else{
             var task = user.data.getTask(user.taskId);
-            this._sendTextMessage(state.userId,"Current TaskID: "+task.taskId+", Task Description: "+task.description);
+            this._sendTextMessage(state.userId,"Currently working on task- "+task.taskId+"  "+task.description);
         }
     },
     handleHelp: function (state) {
@@ -148,17 +150,30 @@ var SlashCommandHandler = {
                 "/workingAt list - List of tasks currently working on"+
                 "/workingAt start - Start working on current task"+
                 "/workingAt stop - End current Task allocation"+
+                "/workingAt done - Mark current task as completed"+
                 "/workingAt what - List the current task";
 
         this._sendTextMessage(state.userId, text);
     },
-    handleAdd: function (state, text) {se
+    handleAdd: function (state, text) {
         var user = Users[state.userId];
         var task = user.data.addToList({
             description:text,
             userId: state.userId
         });
-        this._sendTextMessage(state.userId,"Task created TaskID: "+task.taskId+", Task Description: "+task.description);
+        this._sendTextMessage(state.userId,"You have added a new task, with task id "+task.taskId+"saying "+task.description);
+    },
+    handleMarkAsDone: function(state, subText){
+        var user =  Users[state.userId];
+        var task = user.data.getTask(subText);
+        if(!task) this._sendTextMessage("Unable to find task. Type list for all the tasks.");
+        if (user.taskId) {
+            this._stopAndLogCurrentTask(user);
+        }
+        user.taskId = null;
+        this._sendTextMessage(state.userId,"Yay! Task completed "+task.taskId + " - " +task.description);
+
+
     }
 };
 module.exports = SlashCommandHandler;
