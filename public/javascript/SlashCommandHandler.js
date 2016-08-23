@@ -47,7 +47,10 @@ var SlashCommandHandler = {
             user.endTime = new Date();
             task.timeWorked += user.endTime - user.startTime;
             user.taskId = null;
+            return true;
         }
+        else
+            return false;
     },
     handleList: function (state) {
         var user =  Users[state.userId];
@@ -77,17 +80,32 @@ var SlashCommandHandler = {
             if (user.taskId) {
                 this._stopAndLogCurrentTask(user);
             }
+            user.taskId = subText;
+            user.startTime= new Date();
+            this._sendTextMessage(state.userId,"Current Task: "+newTask.description);
         }
         else{
             this._sendTextMessage(state.userId,"Incorrect TaskId");
         }
-    }
-    ,
-    handleStop: function () {
-
     },
-    handleWhat: function(){
-
+    handleStop: function (state) {
+        var user = Users[state.userId];
+        if(this._stopAndLogCurrentTask(user)){
+            this._sendTextMessage(state.userId,"No Current Task");
+        }
+        else{
+            this._sendTextMessage(state.userId,"Task Stopped");
+        }
+    },
+    handleWhat: function(state){
+        var user = Users[state.userId];
+        if(!user.taskId){
+            this._sendTextMessage(state.userId,"No Current Task");
+        }
+        else{
+            var task = user.data.getTask(user.taskId);
+            this._sendTextMessage(state.userId,"");
+        }
     },
     handleHelp: function () {
         // this.initMockData();
