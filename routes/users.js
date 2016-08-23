@@ -10,7 +10,7 @@ router.post('/', function (req, res, next) {
 
     //res.render('index', {title: 'Express'});
 });
-router.get('/test', function (req, res, next) {
+router.post('/test', function (req, res, next) {
 
     res.send('respond with a resource');
     // KEEP IT FOR APP INSTALL 200 OK

@@ -1,4 +1,4 @@
-var url="http://mockbin.com/request";
+var url="https://api.flock-staging.co/v1/chat.sendMessage";
 var botToken = "u:14hqdwaw9bhkw44d";
 var HttpClient = require('./HttpClient');
 var Authorize = require('./Authorize');
@@ -34,6 +34,7 @@ var SlashCommandHandler = {
         }
     },
     _sendTextMessage: function (userId,msg) {
+        console.log('Sending msg', msg);
         var body= {
             message:{
                 to: botToken,
@@ -109,16 +110,14 @@ var SlashCommandHandler = {
         }
     },
     handleHelp: function (state) {
-        // this.initMockData();
-        // var url = 'http://mockbin.com/request';
-        // var body = {"parameter": 23, "foo": "bar"};
-        // console.log('handling help');
-        // return HttpClient.doPost(TOKEN, url, body).then(function (response) {
-        //     console.log(response);
-        //     return Users['user-guid'];
-        // });
-        var message="help message";
-        this._sendTextMessage(state.userId,message);
+        console.log('----Satet', state);
+        var text = "\\workingAt help - List of commands"+
+                "\\workingAt list - List of tasks currently working on"+
+                "\\workingAt start - Start working on current task"+
+                "\\workingAt stop - End current Task allocation"+
+                "\\workingAt what - List the current task";
+
+        this._sendTextMessage(state.userId, text);
     }
 };
 module.exports = SlashCommandHandler;

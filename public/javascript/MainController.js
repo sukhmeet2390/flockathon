@@ -1,10 +1,10 @@
 var HttpClient = require('./HttpClient');
 var TaskList = require('./TaskList');
-var Authorize = require('../public/javascript/Authorize');
+var Authorize = require('./Authorize');
 var SlashCommandHandler = require('./SlashCommandHandler');
 var User = require('./User');
 
-var Users = {};
+Users = {};
 var TOKEN = '123';
 
 var SLASH_COMMAND = 'workingAt';
@@ -26,14 +26,17 @@ var Controller = {
         // set up app Key and token here
     },
     initUser: function (state) {
+        console.log('state ---- ', state);
         Users[state.userId] = new User(state);
+        console.log(User[state.userId]);
     },
 
 
     handleSlashCommand: function (state) {
         var command = state.command;
+        console.log('--- Users', Users);
         if(!Users[state.userId]){
-            this.initUser();
+            this.initUser(state);
         }
         switch (state.command) {
             case SLASH_COMMAND:
@@ -48,7 +51,7 @@ var Controller = {
         }
     },
     handleAppInstall: function(state){
-        Authorize.saveUserInfo(req.body);
+        Authorize.saveUserInfo(state);
 
     },
     handleAppUnInstall: function(state){
