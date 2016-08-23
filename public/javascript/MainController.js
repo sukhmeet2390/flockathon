@@ -1,5 +1,6 @@
 var HttpClient = require('./HttpClient');
 var TaskList = require('./TaskList');
+var Authorize = require('../public/javascript/Authorize');
 var SlashCommandHandler = require('./SlashCommandHandler');
 var User = require('./User');
 
@@ -47,6 +48,7 @@ var Controller = {
         }
     },
     handleAppInstall: function(state){
+        Authorize.saveUserInfo(req.body);
 
     },
     handleAppUnInstall: function(state){

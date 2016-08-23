@@ -34,6 +34,16 @@ var Authorize = {
     setSecretKey: function(secret){
         APP_SECRET = secret;
         return true
+    },
+    saveUserInfo: function(data){
+        // { userToken: 'a2678e86-3408-4417-846f-7d0f0f811c39',
+        //name: 'app.install',
+          //  userId: 'u:4864gx8v4v8wg4hh' },
+
+        userData[data.userId] = data.userToken;
+    },
+    getUserToken: function(userId){
+        return userData[userId];
     }
 };
 module.exports = Authorize;
