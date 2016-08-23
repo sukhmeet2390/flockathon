@@ -3,7 +3,7 @@ function timeAgo(timeInSeconds){
     timeInSeconds = parseInt(timeInSeconds);
 
     if(timeInSeconds< 60){
-        return timeInSeconds+ " seconds";
+        return timeInSeconds+ " sec";
     }
     if( timeInSeconds < 3600){
         var min = parseInt(timeInSeconds / 60);

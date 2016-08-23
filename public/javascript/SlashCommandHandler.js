@@ -50,7 +50,7 @@ var SlashCommandHandler = {
         };
         HttpClient.doPost(Authorize.getUserToken(userId),url,body);
     },
-    _sendHtmlMessage: function (userId,bodyHTML,text) {
+    _sendHtmlMessage: function (userId,bodyHTML,text, height) {
         console.log('Sending html msg', bodyHTML);
         var body= {
             id: "03240904"+Math.random()*1000,
@@ -63,7 +63,8 @@ var SlashCommandHandler = {
                 attachments: [{
                     views: {
                         html: {
-                            inline: bodyHTML
+                            inline: bodyHTML,
+                            height : height
                         }
                     }
                 }]
@@ -93,7 +94,7 @@ var SlashCommandHandler = {
         else{
             console.log("showing rich list");
             var html="<table>";
-            html+="<style>table {font-family: arial, sans-serif;border-collapse: collapse;width: 100%;}td, th {border: 1px solid #dddddd;text-align: left;padding: 8px;} tr:nth-child(even) {background-color: #dddddd;} </style>"
+            html+="<style>table {font-family: arial, sans-serif;border-collapse: collapse;width: 100%; font-size: small}td, th {border: 1px solid #dddddd;text-align: left;padding: 2px;} tr:nth-child(even) {background-color: #dddddd;} </style>"
             html+="<tr> <th>TaskID</th> <th>Description</th> <th>Time Worked</th> <th>Done</th> <th>Current Task</th></tr>";
             var text="No current Task";
             tasklist.forEach(function (task) {
@@ -101,13 +102,14 @@ var SlashCommandHandler = {
                 var done = task.completed?"Yes":"No";
                 var currentTask = task.currentlyWorkingOn?"Yes":"No";
                 if(task.currentlyWorkingOn){
-                    text+="Current Task: "+ task.description;
+                    text ="Current Task: "+ task.description;
                 }
                 html+= "<tr> <td>"+task.taskId+"</td> <td>"+task.description+"</td> <td>"+time+"</td> <td>"+done+"</td> <td>"+currentTask+"</td></tr>";
 
             });
             html+="</table>";
-            this._sendHtmlMessage(state.userId,html,text);
+            var height = tasklist.length*20+40;
+            this._sendHtmlMessage(state.userId,html,text, height);
         }
     },
     handleStart: function (state,subText) {
@@ -161,15 +163,17 @@ var SlashCommandHandler = {
             description:text,
             userId: state.userId
         });
-        this._sendTextMessage(state.userId,"You have added a new task, with task id "+task.taskId+"saying "+task.description);
+        this._sendTextMessage(state.userId,"You have added a new task, with task id "+task.taskId+" with description "+task.description);
     },
     handleMarkAsDone: function(state, subText){
         var user =  Users[state.userId];
         var task = user.data.getTask(subText);
         if(!task) this._sendTextMessage("Unable to find task. Type list for all the tasks.");
+        task.completed = true;
         if (user.taskId) {
             this._stopAndLogCurrentTask(user);
         }
+
         user.taskId = null;
         this._sendTextMessage(state.userId,"Yay! Task completed "+task.taskId + " - " +task.description);
 
