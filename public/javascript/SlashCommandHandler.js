@@ -123,10 +123,11 @@ var SlashCommandHandler = {
     },
     handleAdd: function (state, text) {
         var user = Users[state.userId];
-        user.data.addToList({
+        var task = user.data.addToList({
             description:text,
             userId: state.userId
         });
+        this._sendTextMessage(state.userId,"New TaskID: "+task.taskId+", Task Description: "+task.description);
     }
 };
 module.exports = SlashCommandHandler;

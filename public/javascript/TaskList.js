@@ -5,7 +5,7 @@ function TaskList(){
 TaskList.prototype.addToList = function(props){
     var task = new Task(props);
     this.taskList.push(task);
-    return this.taskList;
+    return task;
 };
 TaskList.prototype.getList = function () {
     return this.taskList;
