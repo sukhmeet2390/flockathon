@@ -90,17 +90,17 @@ var SlashCommandHandler = {
         else{
             console.log("showing rich list");
             var html="<table>";
-            html+="<tr> <th>TaskID</th> <th>Description</th> <th>Time Worked</th> </tr>";
+            html+="<style>table {font-family: arial, sans-serif;border-collapse: collapse;width: 100%;}td, th {border: 1px solid #dddddd;text-align: left;padding: 8px;} tr:nth-child(even) {background-color: #dddddd;} </style>"
+            html+="<tr> <th>TaskID</th> <th>Description</th> <th>Time Worked</th> <th>Done</th> <th>Current Task</th></tr>";
             var text="No current Task";
             tasklist.forEach(function (task) {
                 var time = Util.convertTime(task.timeWorked);
-                // if(task.completed){
-                //     outText+="(DONE)";
-                // }
+                var done = task.completed?"Yes":"No";
+                var currentTask = task.currentlyWorkingOn?"Yes":"No";
                 if(task.currentlyWorkingOn){
                     text+="Current Task: "+ task.description;
                 }
-                html+= "<tr> <td>"+task.taskId+"</td> <td>"+task.description+"</td> <td>"+time+"</td> </tr>";
+                html+= "<tr> <td>"+task.taskId+"</td> <td>"+task.description+"</td> <td>"+time+"</td> <td>"+done+"</td> <td>"+currentTask+"</td></tr>";
 
             });
             html+="</table>";
