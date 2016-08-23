@@ -27,6 +27,8 @@ var SlashCommandHandler = {
             case 'what':
                 this.handleWhat(state,subText);
                 break;
+            case 'add':
+                this.handleAdd(state,subText);
 
             default:
                 break;
@@ -111,13 +113,20 @@ var SlashCommandHandler = {
     },
     handleHelp: function (state) {
         console.log('----Satet', state);
-        var text = "\\workingAt help - List of commands"+
-                "\\workingAt list - List of tasks currently working on"+
-                "\\workingAt start - Start working on current task"+
-                "\\workingAt stop - End current Task allocation"+
-                "\\workingAt what - List the current task";
+        var text = "/workingAt help - List of commands"+
+                "/workingAt list - List of tasks currently working on"+
+                "/workingAt start - Start working on current task"+
+                "/workingAt stop - End current Task allocation"+
+                "/workingAt what - List the current task";
 
         this._sendTextMessage(state.userId, text);
+    },
+    handleAdd: function (state, text) {
+        var user = Users[state.userId];
+        user.data.addToList({
+            description:text,
+            userId: state.userId
+        });
     }
 };
 module.exports = SlashCommandHandler;
