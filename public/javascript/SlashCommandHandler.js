@@ -47,8 +47,8 @@ var SlashCommandHandler = {
         };
         HttpClient.doPost(Authorize.getUserToken(userId),url,body);
     },
-    _sendHtmlMessage: function (userId,body) {
-        console.log('Sending html msg', body);
+    _sendHtmlMessage: function (userId,bodyHTML,text) {
+        console.log('Sending html msg', bodyHTML);
         var body= {
             id: "03240904"+Math.random()*1000,
             title: "Title",
@@ -56,11 +56,11 @@ var SlashCommandHandler = {
             appId: "5b657a91-6860-49ad-9fa1-b6ba89a26e16",
             message: {
                 to: botToken,
-                text: "msg",
+                text: text,
                 attachments: [{
                     views: {
                         html: {
-                            inline: "<div>test</div>"
+                            inline: bodyHTML
                         }
                     }
                 }]
@@ -83,26 +83,29 @@ var SlashCommandHandler = {
     },
     handleList: function (state) {
         var user =  Users[state.userId];
-        var outText="";
         var tasklist = user.data.getList();
         if(tasklist.length==0){
-            outText = "No task listed use command add to insert a task"
+            this._sendTextMessage(state.userId,"No task listed use command add to insert a task");
         }
         else{
+            console.log("showing rich list");
+            var html="<table>";
+            html+="<tr> <th>TaskID</th> <th>Description</th> <th>Time Worked</th> </tr>";
+            var text="No current Task";
             tasklist.forEach(function (task) {
                 var time = Util.convertTime(task.timeWorked);
-                outText+="TaskID: "+task.taskId+",Description: "+task.description+",Time Worked: "+time;
-                if(task.completed){
-                    outText+="(DONE)";
-                }
+                // if(task.completed){
+                //     outText+="(DONE)";
+                // }
                 if(task.currentlyWorkingOn){
-                    outText+="(currentlyTask)";
+                    text+="Current Task: "+ task.description;
                 }
-                outText+="\n";
+                html+= "<tr> <td>"+task.taskId+"</td> <td>"+task.description+"</td> <td>"+time+"</td> </tr>";
+
             });
+            html+="</table>";
+            this._sendHtmlMessage(state.userId,html,text);
         }
-        this._sendHtmlMessage(state.userId,outText);
-        this._sendTextMessage(state.userId,outText);
     },
     handleStart: function (state,subText) {
         var user = Users[state.userId];
